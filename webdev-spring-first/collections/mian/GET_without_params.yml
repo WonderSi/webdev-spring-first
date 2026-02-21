@@ -1,0 +1,30 @@
+info:
+  name: GET_without_params
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{base_url}}/greeting"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Статус ответа должен быть 200", function() {
+          expect(res.status).to.equal(200);
+        })
+
+        test("Поле 'text' существует и не является пустым", function() {
+          const data = res.body;
+          expect(data).to.have.property("text");
+          expect(data.text).to.be.a('string');
+          expect(data.text.length).to.be.greaterThan(0);
+        })
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
