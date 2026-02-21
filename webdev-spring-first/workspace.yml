@@ -1,0 +1,12 @@
+opencollection: 1.0.0
+info:
+  name: "webdev-spring-first"
+  type: workspace
+
+collections:
+  - name: "mian"
+    path: "collections\\mian"
+
+specs:
+
+docs: ''

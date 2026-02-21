@@ -1,0 +1,285 @@
+{
+  "info": {
+    "_postman_id": "21b8f700-a8fe-4f64-93d1-8f20907d82a7",
+    "name": "Main",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48286688"
+  },
+  "item": [
+    {
+      "name": "GET_without_params",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Статус ответа должен быть 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Поле 'text' существует и не является пустым\", function() {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.have.property(\"text\");\r",
+              "    pm.expect(data.text).to.be.a(\"string\");\r",
+              "    pm.expect(data.text.length).to.be.greaterThan(0);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "packages": {},
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/greeting",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "greeting"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET_query",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Статус должен быть 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Возвращены данные пользователя\", function() {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.have.property(\"name\");\r",
+              "    pm.expect(data).to.have.property(\"surname\");\r",
+              "    pm.expect(data.name).to.equal(\"Kirill\");\r",
+              "    pm.expect(data.surname).to.equal(\"Kozlov\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/greeting?id={{user_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "greeting"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "{{user_id}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET_path",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Статус должен быть 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Возвращены данные пользователя\", function() {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.have.property('name');\r",
+              "    pm.expect(data).to.have.property('surname');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/greeting/{{user_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "greeting",
+            "{{user_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET_404",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Статус должен быть 404\", function() {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/greeting?id=00000000-0000-0000-0000-000000000000",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "greeting"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "00000000-0000-0000-0000-000000000000"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Статус должен быть 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Ответ содержит text и id\", function() {\r",
+              "    const data = pm.response.json();\r",
+              "    pm.expect(data).to.have.property(\"text\");\r",
+              "    pm.expect(data).to.have.property(\"id\");\r",
+              "    pm.expect(data.text).to.include(\"Kirill\");\r",
+              "});\r",
+              "\r",
+              "const data = pm.response.json();\r",
+              "if (data && data.id !== undefined) {\r",
+              "    pm.collectionVariables.set(\"user_id\", pm.response.json().id);\r",
+              "    console.log(\"user_id сохранён:\", pm.globals.get(\"user_id\"));\r",
+              "} else {\r",
+              "    console.warn(\"Поле id не найдено в ответе\");\r",
+              "};"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Kirill\",\r\n    \"surname\": \"Kozlov\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/greeting",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "greeting"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "127.0.0.1:8080"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}

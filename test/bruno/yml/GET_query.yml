@@ -1,0 +1,35 @@
+info:
+  name: GET_query
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: "{{base_url}}/greeting?id={{user_id}}"
+  params:
+    - name: id
+      value: "{{user_id}}"
+      type: query
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Статус должен быть 200", function() {
+          expect(res.status).to.equal(200);
+        });
+
+        test("Возвращены данные пользователя", function() {
+          const data = res.body;
+          expect(data).to.have.property("name");
+          expect(data).to.have.property("surname");
+          expect(data.name).to.equal("Kirill");
+          expect(data.surname).to.equal("Kozlov")
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
